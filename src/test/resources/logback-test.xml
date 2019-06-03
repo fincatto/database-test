@@ -7,6 +7,7 @@
             </pattern>
         </encoder>
     </appender>
+    <logger name="com.fincatto.databasetest" level="DEBUG" />
     <root level="WARN">
         <appender-ref ref="STDOUT"/>
     </root>

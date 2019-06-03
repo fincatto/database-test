@@ -11,12 +11,24 @@ import java.sql.Statement;
 public class DatabasePersonTest extends DatabaseTest {
     
     @Test
-    public void testPerson() throws SQLException {
-        try (Connection conn = super.getConnection()) {
+    public void testPerson1() throws SQLException {
+        try (Connection conn = getConnection()) {
             try (Statement statement = conn.createStatement()) {
-                Assert.assertTrue(statement.execute("INSERT INTO public.person (name) VALUES ('John Doe')"));
-                Assert.assertTrue(statement.execute("SELECT * FROM public.person"));
-                try (ResultSet resultSet = statement.getResultSet()) {
+                statement.execute("INSERT INTO public.person (name) VALUES ('John Doe');");
+                try (ResultSet resultSet = statement.executeQuery("SELECT * FROM public.person")) {
+                    Assert.assertTrue(resultSet.next());
+                    Assert.assertEquals(1, resultSet.getInt("id"));
+                    Assert.assertEquals("John Doe", resultSet.getString("name"));
+                }
+            }
+        }
+    }
+    
+    @Test
+    public void testPerson2() throws SQLException {
+        try (Connection conn = getConnection()) {
+            try (Statement statement = conn.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery("SELECT * FROM public.person")) {
                     Assert.assertTrue(resultSet.next());
                     Assert.assertEquals(1, resultSet.getInt("id"));
                     Assert.assertEquals("John Doe", resultSet.getString("name"));
